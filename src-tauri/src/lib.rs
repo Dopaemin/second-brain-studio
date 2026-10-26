@@ -12,7 +12,7 @@ pub fn run() {
             let menu = Menu::with_items(app, &[&quit])?;
 
             TrayIconBuilder::new()
-                .icon(app.default_window_icon().unwrap().clone())
+                .icon(app.default_window_icon().ok_or("no default icon")?.clone())
                 .menu(&menu)
                 .on_tray_icon_event(|tray, event| {
                     if let TrayIconEvent::Click {
