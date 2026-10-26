@@ -26,6 +26,7 @@ export function useVaultFiles(vault: "work" | "private") {
   useEffect(() => {
     invoke<VaultFile[]>("list_vault_files", { vaultPath })
       .then(setFiles)
+      .catch((e) => console.error("Failed to list vault files:", e))
       .finally(() => setLoading(false));
   }, [vaultPath]);
 
@@ -48,7 +49,9 @@ export function useTodos(vault: "work" | "private") {
   const [todos, setTodos] = useState<TodoItem[]>([]);
 
   const refresh = useCallback(() => {
-    invoke<TodoItem[]>("parse_todos", { vaultPath }).then(setTodos);
+    invoke<TodoItem[]>("parse_todos", { vaultPath })
+      .then(setTodos)
+      .catch((e) => console.error("Failed to parse todos:", e));
   }, [vaultPath]);
 
   useEffect(() => {
