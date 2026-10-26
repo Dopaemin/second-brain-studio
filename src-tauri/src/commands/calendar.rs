@@ -23,7 +23,7 @@ pub fn get_calendar_events() -> Result<Vec<CalendarEvent>, String> {
                     set evtStart to start date of e
                     set evtEnd to end date of e
                     set calName to name of c
-                    set output to output & evtTitle & "|||" & (evtStart as string) & "|||" & (evtEnd as string) & "|||" & calName & "\n"
+                    set output to output & evtTitle & "|||" & (evtStart as string) & "|||" & (evtEnd as string) & "|||" & calName & (ASCII character 10)
                 end repeat
             end repeat
         end tell

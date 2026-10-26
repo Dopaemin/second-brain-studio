@@ -66,6 +66,9 @@ pub fn toggle_todo(file_path: String, line_index: usize, checked: bool) -> Resul
 
     let mut new_lines: Vec<String> = lines.iter().map(|l| l.to_string()).collect();
     new_lines[line_index] = new_line_owned;
-    let new_content = new_lines.join("\n");
+    let mut new_content = new_lines.join("\n");
+    if content.ends_with('\n') {
+        new_content.push('\n');
+    }
     std::fs::write(&file_path, new_content).map_err(|e| e.to_string())
 }
