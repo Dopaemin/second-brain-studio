@@ -60,16 +60,21 @@ export function FinanceWidget() {
       return;
     }
     setError(null);
-    await invoke("add_finance_entry", {
-      financePath: FINANCE_PATH,
-      entry: {
-        date: form.date,
-        amount: parseFloat(form.amount),
-        category: form.category,
-        description: form.description,
-        entry_type: form.type,
-      },
-    });
+    try {
+      await invoke("add_finance_entry", {
+        financePath: FINANCE_PATH,
+        entry: {
+          date: form.date,
+          amount: parseFloat(form.amount),
+          category: form.category,
+          description: form.description,
+          entry_type: form.type,
+        },
+      });
+    } catch (e) {
+      setError(String(e));
+      return;
+    }
     setForm({ date: new Date().toISOString().slice(0, 10), amount: "", category: "", description: "", type: "expense" });
     setAdding(false);
     refresh();

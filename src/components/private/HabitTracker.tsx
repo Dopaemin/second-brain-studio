@@ -4,7 +4,8 @@ import { GlassPanel } from "../GlassPanel";
 
 const HABITS_PATH =
   "/Users/I539120/Documents/personal-brain/03 Bereiche/Habits/Habits.md";
-const TODAY = new Date().toISOString().slice(0, 10);
+
+const getTodayStr = () => new Date().toISOString().slice(0, 10);
 
 interface Habit {
   name: string;
@@ -16,6 +17,7 @@ export function HabitTracker() {
   const [habits, setHabits] = useState<Habit[]>([]);
 
   const refresh = useCallback(async () => {
+    const TODAY_STR = getTodayStr();
     const content = await invoke<string>("read_file", {
       path: HABITS_PATH,
     }).catch(() => "");
@@ -40,7 +42,7 @@ export function HabitTracker() {
         if (!name) continue;
         const doneToday = lines
           .slice(i + 1, i + 10)
-          .some((l) => l.includes(TODAY) && l.includes("[x]"));
+          .some((l) => l.includes(TODAY_STR) && l.includes("[x]"));
         found.push({ name, doneToday, lineIndex: i });
       }
     }
@@ -52,20 +54,32 @@ export function HabitTracker() {
   }, [refresh]);
 
   const toggleHabit = async (habit: Habit) => {
+    const TODAY_STR = getTodayStr();
     const content = await invoke<string>("read_file", {
       path: HABITS_PATH,
     }).catch(() => "");
     const lines = content.split("\n");
     if (habit.doneToday) {
-      const filtered = lines.filter(
-        (l) => !(l.includes(TODAY) && l.includes(habit.name))
+      const completionLine = `  - [x] ${TODAY_STR} – ${habit.name}`;
+      const completionIndex = lines.findIndex(
+        (l) => l.trim() === completionLine.trim()
       );
+      if (completionIndex !== -1) {
+        lines.splice(completionIndex, 1);
+      }
       await invoke("write_file", {
         path: HABITS_PATH,
-        content: filtered.join("\n"),
+        content: lines.join("\n"),
       });
     } else {
-      lines.splice(habit.lineIndex + 1, 0, `  - [x] ${TODAY} – ${habit.name}`);
+      const currentLineIndex = lines.findIndex(
+        (l) => l.trim() === `- ${habit.name}`
+      );
+      if (currentLineIndex === -1) {
+        refresh();
+        return;
+      }
+      lines.splice(currentLineIndex + 1, 0, `  - [x] ${TODAY_STR} – ${habit.name}`);
       await invoke("write_file", {
         path: HABITS_PATH,
         content: lines.join("\n"),
