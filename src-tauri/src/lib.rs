@@ -13,8 +13,9 @@ pub fn run() {
             let quit = MenuItem::with_id(app, "quit", "Quit", true, None::<&str>)?;
             let menu = Menu::with_items(app, &[&quit])?;
 
+            let icon = tauri::include_image!("icons/icon.png");
             TrayIconBuilder::new()
-                .icon(app.default_window_icon().ok_or("no default icon")?.clone())
+                .icon(icon)
                 .menu(&menu)
                 .on_tray_icon_event(|tray, event| {
                     if let TrayIconEvent::Click {
@@ -28,6 +29,7 @@ pub fn run() {
                             if window.is_visible().unwrap_or(false) {
                                 let _ = window.hide();
                             } else {
+                                let _ = window.center();
                                 let _ = window.show();
                                 let _ = window.set_focus();
                             }
@@ -40,6 +42,13 @@ pub fn run() {
                     }
                 })
                 .build(app)?;
+
+            // Center and show the window on startup
+            if let Some(window) = app.get_webview_window("main") {
+                let _ = window.center();
+                let _ = window.show();
+                let _ = window.set_focus();
+            }
 
             Ok(())
         })
