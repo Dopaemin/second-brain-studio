@@ -4,6 +4,8 @@ use tauri::{
     Manager,
 };
 
+mod commands;
+
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
@@ -41,7 +43,18 @@ pub fn run() {
 
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![])
+        .invoke_handler(tauri::generate_handler![
+            commands::fs::list_vault_files,
+            commands::fs::read_file,
+            commands::fs::write_file,
+            commands::fs::open_in_editor,
+            commands::fs::recent_files,
+            commands::todos::parse_todos,
+            commands::todos::toggle_todo,
+            commands::calendar::get_calendar_events,
+            commands::finance::get_finance_data,
+            commands::finance::add_finance_entry,
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
