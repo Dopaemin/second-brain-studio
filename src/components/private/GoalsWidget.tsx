@@ -39,14 +39,14 @@ export function GoalsWidget() {
     <GlassPanel title="Ziele">
       <div className="flex flex-col gap-1">
         {goals.length === 0 && (
-          <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
+          <p className="text-sm" style={{ color: "var(--text-muted)" }}>
             Keine Ziele
           </p>
         )}
         {goals.map((g, i) => (
           <div key={i} className="flex items-center gap-2">
             <span style={{ color: "var(--accent)" }}>◎</span>
-            <p className="text-sm" style={{ color: "var(--text-primary)" }}>
+            <p className="text-sm" style={{ color: "var(--text)" }}>
               {g}
             </p>
           </div>

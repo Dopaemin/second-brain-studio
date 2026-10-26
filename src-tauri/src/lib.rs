@@ -43,13 +43,6 @@ pub fn run() {
                 })
                 .build(app)?;
 
-            // Center and show the window on startup
-            if let Some(window) = app.get_webview_window("main") {
-                let _ = window.center();
-                let _ = window.show();
-                let _ = window.set_focus();
-            }
-
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![

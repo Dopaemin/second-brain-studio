@@ -16,10 +16,10 @@ export function ModeSwitch({ mode, onToggle }: ModeSwitchProps) {
         "hover:scale-105 active:scale-95"
       )}
       style={{
-        background: "var(--glass-bg)",
+        background: "var(--bg-surface)",
         borderColor: "var(--accent-border)",
-        boxShadow: `0 0 16px var(--accent-glow)`,
-        color: "var(--text-primary)",
+        boxShadow: `0 0 16px var(--accent-muted)`,
+        color: "var(--text)",
       }}
     >
       <span style={{ opacity: mode === "work" ? 1 : 0.4, transition: "opacity 400ms" }}>

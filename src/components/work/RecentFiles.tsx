@@ -21,19 +21,54 @@ export function RecentFiles() {
   };
 
   return (
-    <GlassPanel title="Zuletzt bearbeitet">
-      <div className="flex flex-col gap-1">
-        {files.map((f) => (
+    <GlassPanel title="Zuletzt bearbeitet" className="h-full">
+      <div style={{ overflow: "auto", flex: 1 }}>
+        {files.map((f, i) => (
           <button
             key={f.path}
             onClick={() => handleClick(f.path)}
-            className="flex items-center justify-between text-sm px-2 py-1 rounded-md hover:bg-white/5 transition-colors no-drag"
-            style={{ color: "var(--text-primary)" }}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              width: "100%",
+              padding: "7px 14px",
+              border: "none",
+              borderBottom:
+                i < files.length - 1
+                  ? "1px solid var(--border-subtle)"
+                  : "none",
+              background: "transparent",
+              cursor: "pointer",
+              transition: "background 150ms ease",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.background = "var(--bg-surface-hover)")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.background = "transparent")
+            }
           >
-            <span className="truncate flex-1 text-left">{f.name}</span>
             <span
-              className="ml-2 text-xs shrink-0"
-              style={{ color: "var(--text-secondary)" }}
+              style={{
+                fontSize: "13px",
+                color: "var(--text)",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                flex: 1,
+                textAlign: "left",
+              }}
+            >
+              {f.name}
+            </span>
+            <span
+              style={{
+                fontSize: "11px",
+                color: "var(--text-muted)",
+                marginLeft: "8px",
+                flexShrink: 0,
+              }}
             >
               {timeAgo(f.modified)}
             </span>

@@ -1,22 +1,51 @@
 import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
 
-interface GlassPanelProps {
+interface PanelProps {
   children: ReactNode;
   className?: string;
   title?: string;
+  action?: ReactNode;
 }
 
-export function GlassPanel({ children, className, title }: GlassPanelProps) {
+export function GlassPanel({ children, className, title, action }: PanelProps) {
   return (
-    <div className={cn("glass-panel p-4 flex flex-col gap-3", className)}>
+    <div
+      className={cn("flex flex-col", className)}
+      style={{
+        background: "var(--bg-surface)",
+        border: "1px solid var(--border)",
+        borderRadius: "10px",
+        overflow: "hidden",
+      }}
+    >
       {title && (
-        <h3 className="text-xs font-semibold uppercase tracking-widest"
-            style={{ color: "var(--accent)", opacity: 0.85 }}>
-          {title}
-        </h3>
+        <div
+          style={{
+            padding: "10px 14px 9px",
+            borderBottom: "1px solid var(--border-subtle)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <span
+            style={{
+              fontSize: "11px",
+              fontWeight: 600,
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+              color: "var(--text-muted)",
+            }}
+          >
+            {title}
+          </span>
+          {action}
+        </div>
       )}
-      {children}
+      <div className="flex flex-col" style={{ flex: 1, overflow: "hidden" }}>
+        {children}
+      </div>
     </div>
   );
 }

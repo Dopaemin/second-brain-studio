@@ -11,7 +11,7 @@ export function PrivateTodos() {
       <ScrollArea className="flex-1 h-0">
         <div className="flex flex-col gap-1">
           {open.length === 0 && (
-            <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
+            <p className="text-sm" style={{ color: "var(--text-muted)" }}>
               Keine offenen Todos
             </p>
           )}
@@ -30,13 +30,13 @@ export function PrivateTodos() {
               <div>
                 <p
                   className="text-sm"
-                  style={{ color: "var(--text-primary)" }}
+                  style={{ color: "var(--text)" }}
                 >
                   {todo.text}
                 </p>
                 <p
                   className="text-xs"
-                  style={{ color: "var(--text-secondary)" }}
+                  style={{ color: "var(--text-muted)" }}
                 >
                   {todo.file_path.split("/").pop()?.replace(".md", "")}
                 </p>

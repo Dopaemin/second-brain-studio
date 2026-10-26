@@ -92,7 +92,7 @@ export function HabitTracker() {
     <GlassPanel title="Habit Tracker – Heute">
       <div className="flex flex-col gap-2">
         {habits.length === 0 && (
-          <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
+          <p className="text-sm" style={{ color: "var(--text-muted)" }}>
             Keine Habits
           </p>
         )}
@@ -112,7 +112,7 @@ export function HabitTracker() {
             <p
               className="text-sm"
               style={{
-                color: "var(--text-primary)",
+                color: "var(--text)",
                 textDecoration: h.doneToday ? "line-through" : "none",
                 opacity: h.doneToday ? 0.5 : 1,
               }}

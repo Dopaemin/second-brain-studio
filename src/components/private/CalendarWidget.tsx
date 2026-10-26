@@ -24,7 +24,7 @@ export function CalendarWidget() {
     <GlassPanel title="Kalender – Nächste 7 Tage" className="h-full">
       <ScrollArea className="flex-1 h-0">
         {loading && (
-          <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
+          <p className="text-sm" style={{ color: "var(--text-muted)" }}>
             Lädt...
           </p>
         )}
@@ -38,20 +38,20 @@ export function CalendarWidget() {
             <div key={i} className="flex flex-col gap-0.5 px-1">
               <p
                 className="text-sm font-medium"
-                style={{ color: "var(--text-primary)" }}
+                style={{ color: "var(--text)" }}
               >
                 {e.title}
               </p>
               <p className="text-xs" style={{ color: "var(--accent)" }}>
                 {formatEventTime(e.start)}
               </p>
-              <p className="text-xs" style={{ color: "var(--text-secondary)" }}>
+              <p className="text-xs" style={{ color: "var(--text-muted)" }}>
                 {e.calendar}
               </p>
             </div>
           ))}
           {!loading && events.length === 0 && !error && (
-            <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
+            <p className="text-sm" style={{ color: "var(--text-muted)" }}>
               Keine Termine
             </p>
           )}

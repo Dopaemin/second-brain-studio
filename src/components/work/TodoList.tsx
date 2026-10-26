@@ -17,26 +17,68 @@ export function TodoList() {
   return (
     <GlassPanel title="ToDos" className="h-full">
       <ScrollArea className="flex-1 h-0">
-        <div className="flex flex-col gap-1">
+        <div style={{ padding: "4px 0" }}>
           {open.length === 0 && (
-            <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
+            <p
+              style={{
+                fontSize: "13px",
+                color: "var(--text-muted)",
+                padding: "10px 14px",
+              }}
+            >
               Keine offenen Todos
             </p>
           )}
           {open.map((todo) => (
-            <div key={`${todo.file_path}-${todo.line_index}`} className="flex items-start gap-2 px-1 py-0.5">
+            <div
+              key={`${todo.file_path}-${todo.line_index}`}
+              style={{
+                display: "flex",
+                alignItems: "flex-start",
+                gap: "8px",
+                padding: "6px 14px",
+                transition: "background 150ms ease",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.background = "var(--bg-surface-hover)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.background = "transparent")
+              }
+            >
               <input
                 type="checkbox"
                 checked={todo.checked}
                 onChange={() => handleToggle(todo)}
-                className="mt-0.5 shrink-0"
-                style={{ accentColor: "var(--accent)" }}
+                style={{
+                  marginTop: "2px",
+                  flexShrink: 0,
+                  accentColor: "var(--accent)",
+                  cursor: "pointer",
+                }}
               />
-              <div>
-                <p className="text-sm" style={{ color: "var(--text-primary)" }}>
+              <div style={{ overflow: "hidden" }}>
+                <p
+                  style={{
+                    fontSize: "13px",
+                    color: "var(--text)",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
                   {todo.text}
                 </p>
-                <p className="text-xs" style={{ color: "var(--text-secondary)" }}>
+                <p
+                  style={{
+                    fontSize: "11px",
+                    color: "var(--text-muted)",
+                    marginTop: "1px",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
                   {todo.file_path.split("/").pop()?.replace(".md", "")}
                 </p>
               </div>

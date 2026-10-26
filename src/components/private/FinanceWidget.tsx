@@ -94,7 +94,7 @@ export function FinanceWidget() {
             },
           ].map((s) => (
             <div key={s.label} className="text-center">
-              <p className="text-xs" style={{ color: "var(--text-secondary)" }}>
+              <p className="text-xs" style={{ color: "var(--text-muted)" }}>
                 {s.label}
               </p>
               <p
@@ -113,9 +113,9 @@ export function FinanceWidget() {
           onClick={() => setAdding(true)}
           className="text-xs px-3 py-1 rounded-full self-start no-drag"
           style={{
-            background: "var(--accent-glow)",
+            background: "var(--accent-muted)",
             border: "1px solid var(--accent-border)",
-            color: "var(--text-primary)",
+            color: "var(--text)",
           }}
         >
           + Eintrag
@@ -134,7 +134,7 @@ export function FinanceWidget() {
               setForm((f) => ({ ...f, date: e.target.value }))
             }
             className="text-sm bg-white/5 rounded px-2 py-1 outline-none"
-            style={{ color: "var(--text-primary)" }}
+            style={{ color: "var(--text)" }}
           />
           <div className="flex gap-2">
             <input
@@ -144,7 +144,7 @@ export function FinanceWidget() {
                 setForm((f) => ({ ...f, amount: e.target.value }))
               }
               className="flex-1 text-sm bg-white/5 rounded px-2 py-1 outline-none"
-              style={{ color: "var(--text-primary)" }}
+              style={{ color: "var(--text)" }}
               type="number"
             />
             <select
@@ -153,7 +153,7 @@ export function FinanceWidget() {
                 setForm((f) => ({ ...f, type: e.target.value }))
               }
               className="text-sm bg-white/5 rounded px-2 py-1 outline-none"
-              style={{ color: "var(--text-primary)" }}
+              style={{ color: "var(--text)" }}
             >
               <option value="expense">Ausgabe</option>
               <option value="income">Einnahme</option>
@@ -166,7 +166,7 @@ export function FinanceWidget() {
               setForm((f) => ({ ...f, category: e.target.value }))
             }
             className="text-sm bg-white/5 rounded px-2 py-1 outline-none"
-            style={{ color: "var(--text-primary)" }}
+            style={{ color: "var(--text)" }}
           />
           <input
             placeholder="Beschreibung"
@@ -175,16 +175,16 @@ export function FinanceWidget() {
               setForm((f) => ({ ...f, description: e.target.value }))
             }
             className="text-sm bg-white/5 rounded px-2 py-1 outline-none"
-            style={{ color: "var(--text-primary)" }}
+            style={{ color: "var(--text)" }}
           />
           <div className="flex gap-2">
             <button
               onClick={submit}
               className="text-xs px-3 py-1 rounded-full"
               style={{
-                background: "var(--accent-glow)",
+                background: "var(--accent-muted)",
                 border: "1px solid var(--accent-border)",
-                color: "var(--text-primary)",
+                color: "var(--text)",
               }}
             >
               Speichern
@@ -195,7 +195,7 @@ export function FinanceWidget() {
                 setError(null);
               }}
               className="text-xs px-3 py-1 rounded-full"
-              style={{ color: "var(--text-secondary)" }}
+              style={{ color: "var(--text-muted)" }}
             >
               Abbrechen
             </button>

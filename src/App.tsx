@@ -1,43 +1,105 @@
 import { useState } from "react";
-import { ModeSwitch } from "./components/ModeSwitch";
 import { WorkDashboard } from "./components/work/WorkDashboard";
 import { PrivateDashboard } from "./components/private/PrivateDashboard";
+import { BriefcaseIcon, UserIcon } from "lucide-react";
 
 export default function App() {
   const [mode, setMode] = useState<"work" | "private">("work");
 
   return (
-    <div data-mode={mode} style={{ width: "100%", height: "100%", position: "relative" }}>
-      <div className="app-bg" />
-      <div
+    <div
+      data-mode={mode}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100vh",
+        background: "var(--bg)",
+        color: "var(--text)",
+      }}
+    >
+      {/* Top navigation bar */}
+      <header
         style={{
-          position: "relative",
-          zIndex: 1,
-          width: "100%",
-          height: "100%",
+          height: "52px",
+          borderBottom: "1px solid var(--border)",
           display: "flex",
-          flexDirection: "column",
+          alignItems: "center",
+          padding: "0 20px",
+          gap: "8px",
+          background: "var(--bg-surface)",
+          flexShrink: 0,
         }}
       >
-        {/* Drag region header */}
         <div
-          className="drag-region"
           style={{
-            height: "44px",
             display: "flex",
             alignItems: "center",
-            justifyContent: "center",
-            flexShrink: 0,
+            gap: "6px",
+            marginRight: "auto",
           }}
         >
-          <ModeSwitch mode={mode} onToggle={() => setMode(m => m === "work" ? "private" : "work")} />
+          <div
+            style={{
+              width: "24px",
+              height: "24px",
+              borderRadius: "6px",
+              background: "var(--accent-muted)",
+              border: "1px solid var(--accent-border)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: "12px",
+            }}
+          >
+            🧠
+          </div>
+          <span style={{ fontWeight: 600, fontSize: "14px", letterSpacing: "-0.01em" }}>
+            Second Brain
+          </span>
         </div>
 
-        {/* Dashboard content */}
-        <div style={{ flex: 1, overflow: "hidden", padding: "0 16px 16px" }}>
-          {mode === "work" ? <WorkDashboard /> : <PrivateDashboard />}
+        {/* Mode toggle */}
+        <div
+          style={{
+            display: "flex",
+            background: "var(--bg)",
+            border: "1px solid var(--border)",
+            borderRadius: "8px",
+            padding: "3px",
+            gap: "2px",
+          }}
+        >
+          {(["work", "private"] as const).map((m) => (
+            <button
+              key={m}
+              onClick={() => setMode(m)}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "5px",
+                padding: "4px 12px",
+                borderRadius: "5px",
+                border: "none",
+                cursor: "pointer",
+                fontSize: "12px",
+                fontWeight: 500,
+                background: mode === m ? "var(--accent-muted)" : "transparent",
+                color: mode === m ? "var(--accent)" : "var(--text-muted)",
+                outline: mode === m ? "1px solid var(--accent-border)" : "none",
+                transition: "all 200ms ease",
+              }}
+            >
+              {m === "work" ? <BriefcaseIcon size={12} /> : <UserIcon size={12} />}
+              {m === "work" ? "Work" : "Private"}
+            </button>
+          ))}
         </div>
-      </div>
+      </header>
+
+      {/* Main content */}
+      <main style={{ flex: 1, overflow: "hidden" }}>
+        {mode === "work" ? <WorkDashboard /> : <PrivateDashboard />}
+      </main>
     </div>
   );
 }

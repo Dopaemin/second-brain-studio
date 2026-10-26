@@ -9,19 +9,48 @@ export function SprintNotes() {
     .slice(0, 5);
 
   return (
-    <GlassPanel title="Sprint Notes">
-      <div className="flex flex-col gap-1">
+    <GlassPanel title="Sprint Notes" className="h-full">
+      <div style={{ overflow: "auto", flex: 1 }}>
         {sessions.length === 0 && (
-          <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
+          <p
+            style={{
+              fontSize: "13px",
+              color: "var(--text-muted)",
+              padding: "10px 14px",
+            }}
+          >
             Keine Session Logs
           </p>
         )}
-        {sessions.map((f) => (
+        {sessions.map((f, i) => (
           <button
             key={f.path}
             onClick={() => openInEditor(f.path)}
-            className="text-left text-sm px-2 py-1 rounded-md hover:bg-white/5 transition-colors truncate no-drag"
-            style={{ color: "var(--text-primary)" }}
+            style={{
+              display: "block",
+              width: "100%",
+              textAlign: "left",
+              fontSize: "13px",
+              color: "var(--text)",
+              padding: "7px 14px",
+              border: "none",
+              borderBottom:
+                i < sessions.length - 1
+                  ? "1px solid var(--border-subtle)"
+                  : "none",
+              background: "transparent",
+              cursor: "pointer",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+              transition: "background 150ms ease",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.background = "var(--bg-surface-hover)")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.background = "transparent")
+            }
           >
             {f.name}
           </button>
