@@ -12,13 +12,21 @@ export function RecentFiles() {
   const files = useRecentFiles("work", 10);
   const openInEditor = useOpenInEditor();
 
+  const handleClick = async (path: string) => {
+    try {
+      await openInEditor(path);
+    } catch (e) {
+      console.error("Failed to open file:", e);
+    }
+  };
+
   return (
     <GlassPanel title="Zuletzt bearbeitet">
       <div className="flex flex-col gap-1">
         {files.map((f) => (
           <button
             key={f.path}
-            onClick={() => openInEditor(f.path)}
+            onClick={() => handleClick(f.path)}
             className="flex items-center justify-between text-sm px-2 py-1 rounded-md hover:bg-white/5 transition-colors no-drag"
             style={{ color: "var(--text-primary)" }}
           >

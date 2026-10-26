@@ -8,18 +8,26 @@ const INBOX_PATH =
 export function QuickNote() {
   const [text, setText] = useState("");
   const [saved, setSaved] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const save = async () => {
     if (!text.trim()) return;
-    const existing = await invoke<string>("read_file", {
-      path: INBOX_PATH,
-    }).catch(() => "# Schnellnotizen\n");
-    const date = new Date().toISOString().slice(0, 16).replace("T", " ");
-    const appended = `${existing}\n- ${date}: ${text.trim()}`;
-    await invoke("write_file", { path: INBOX_PATH, content: appended });
-    setText("");
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
+    try {
+      setError(null);
+      const existing = await invoke<string>("read_file", {
+        path: INBOX_PATH,
+      }).catch(() => "# Schnellnotizen\n");
+      const date = new Date().toISOString().slice(0, 16).replace("T", " ");
+      const appended = `${existing}\n- ${date}: ${text.trim()}`;
+      await invoke("write_file", { path: INBOX_PATH, content: appended });
+      setText("");
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2000);
+    } catch (e) {
+      console.error("Failed to save note:", e);
+      setError("Fehler beim Speichern");
+      setTimeout(() => setError(null), 3000);
+    }
   };
 
   return (
@@ -34,6 +42,11 @@ export function QuickNote() {
           if (e.key === "Enter" && e.metaKey) save();
         }}
       />
+      {error && (
+        <p className="text-xs mt-1" style={{ color: "#ef4444" }}>
+          {error}
+        </p>
+      )}
       <button
         onClick={save}
         className="self-end text-xs px-3 py-1 rounded-full no-drag transition-all hover:scale-105"

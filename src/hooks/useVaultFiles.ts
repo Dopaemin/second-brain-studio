@@ -38,7 +38,9 @@ export function useRecentFiles(vault: "work" | "private", limit = 10) {
   const [files, setFiles] = useState<VaultFile[]>([]);
 
   useEffect(() => {
-    invoke<VaultFile[]>("recent_files", { vaultPath, limit }).then(setFiles);
+    invoke<VaultFile[]>("recent_files", { vaultPath, limit })
+      .then(setFiles)
+      .catch((e) => console.error("Failed to get recent files:", e));
   }, [vaultPath, limit]);
 
   return files;

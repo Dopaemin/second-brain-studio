@@ -1,10 +1,18 @@
-import { useTodos } from "@/hooks/useVaultFiles";
+import { useTodos, type TodoItem } from "@/hooks/useVaultFiles";
 import { GlassPanel } from "../GlassPanel";
 import { ScrollArea } from "../ui/scroll-area";
 
 export function TodoList() {
   const { todos, toggle } = useTodos("work");
   const open = todos.filter((t) => !t.checked).slice(0, 15);
+
+  const handleToggle = async (todo: TodoItem) => {
+    try {
+      await toggle(todo);
+    } catch (e) {
+      console.error("Failed to toggle todo:", e);
+    }
+  };
 
   return (
     <GlassPanel title="ToDos" className="h-full">
@@ -15,12 +23,12 @@ export function TodoList() {
               Keine offenen Todos
             </p>
           )}
-          {open.map((todo, i) => (
-            <div key={i} className="flex items-start gap-2 px-1 py-0.5">
+          {open.map((todo) => (
+            <div key={`${todo.file_path}-${todo.line_index}`} className="flex items-start gap-2 px-1 py-0.5">
               <input
                 type="checkbox"
                 checked={todo.checked}
-                onChange={() => toggle(todo)}
+                onChange={() => handleToggle(todo)}
                 className="mt-0.5 shrink-0"
                 style={{ accentColor: "var(--accent)" }}
               />
