@@ -52,7 +52,7 @@ export function CalendarWidget() {
           ))}
           {!loading && events.length === 0 && !error && (
             <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
-              Keine Events
+              Keine Termine
             </p>
           )}
         </div>

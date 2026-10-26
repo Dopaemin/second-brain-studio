@@ -21,8 +21,16 @@ export function HabitTracker() {
     }).catch(() => "");
     const lines = content.split("\n");
     const found: Habit[] = [];
+    let inActiveSection = false;
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i].trim();
+      if (line.toLowerCase() === "## aktive habits") {
+        inActiveSection = true;
+        continue;
+      }
+      if (!inActiveSection) continue;
+      // Stop at the next heading
+      if (line.startsWith("##")) break;
       if (
         line.startsWith("- ") &&
         !line.startsWith("- [ ]") &&
@@ -71,7 +79,7 @@ export function HabitTracker() {
       <div className="flex flex-col gap-2">
         {habits.length === 0 && (
           <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
-            Habits in Habits.md unter "## Aktive Habits" eintragen
+            Keine Habits
           </p>
         )}
         {habits.map((h, i) => (

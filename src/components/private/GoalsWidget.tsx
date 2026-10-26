@@ -8,25 +8,22 @@ export function GoalsWidget() {
   const [goals, setGoals] = useState<string[]>([]);
 
   useEffect(() => {
-    const goalFiles = files.filter(
-      (f) => f.category === "02 Projekte" || f.category === "03 Bereiche"
-    );
-    if (goalFiles.length === 0) return;
+    if (files.length === 0) return;
 
     const load = async () => {
       const found: string[] = [];
-      for (const f of goalFiles.slice(0, 10)) {
+      for (const f of files.slice(0, 10)) {
         const content = await invoke<string>("read_file", {
           path: f.path,
         }).catch(() => "");
         for (const line of content.split("\n")) {
+          const trimmed = line.trim();
           if (
-            line.trim().startsWith("- [ ]") ||
-            line.toLowerCase().includes("ziel:")
+            trimmed.startsWith("- [ ]") ||
+            trimmed.toLowerCase().startsWith("ziel:")
           ) {
             found.push(
-              line
-                .trim()
+              trimmed
                 .replace(/^-\s*\[\s*\]\s*/, "")
                 .replace(/^ziel:\s*/i, "")
             );
@@ -43,7 +40,7 @@ export function GoalsWidget() {
       <div className="flex flex-col gap-1">
         {goals.length === 0 && (
           <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
-            Keine Ziele gefunden
+            Keine Ziele
           </p>
         )}
         {goals.map((g, i) => (

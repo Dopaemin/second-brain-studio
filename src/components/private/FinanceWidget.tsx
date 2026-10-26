@@ -23,6 +23,7 @@ const FINANCE_PATH =
 export function FinanceWidget() {
   const [data, setData] = useState<FinanceSummary | null>(null);
   const [form, setForm] = useState({
+    date: new Date().toISOString().slice(0, 10),
     amount: "",
     category: "",
     description: "",
@@ -42,23 +43,34 @@ export function FinanceWidget() {
   }, [refresh]);
 
   const submit = async () => {
-    if (!form.amount || !form.category) {
-      setError("Betrag und Kategorie sind Pflichtfelder");
+    if (!form.date) {
+      setError("Datum ist ein Pflichtfeld");
+      return;
+    }
+    if (!form.description) {
+      setError("Beschreibung ist ein Pflichtfeld");
+      return;
+    }
+    if (!form.amount || isNaN(parseFloat(form.amount))) {
+      setError("Betrag muss eine gültige Zahl sein");
+      return;
+    }
+    if (!form.category) {
+      setError("Kategorie ist ein Pflichtfeld");
       return;
     }
     setError(null);
-    const today = new Date().toISOString().slice(0, 10);
     await invoke("add_finance_entry", {
       financePath: FINANCE_PATH,
       entry: {
-        date: today,
+        date: form.date,
         amount: parseFloat(form.amount),
         category: form.category,
         description: form.description,
         entry_type: form.type,
       },
     });
-    setForm({ amount: "", category: "", description: "", type: "expense" });
+    setForm({ date: new Date().toISOString().slice(0, 10), amount: "", category: "", description: "", type: "expense" });
     setAdding(false);
     refresh();
   };
@@ -110,6 +122,15 @@ export function FinanceWidget() {
               {error}
             </p>
           )}
+          <input
+            type="date"
+            value={form.date}
+            onChange={(e) =>
+              setForm((f) => ({ ...f, date: e.target.value }))
+            }
+            className="text-sm bg-white/5 rounded px-2 py-1 outline-none"
+            style={{ color: "var(--text-primary)" }}
+          />
           <div className="flex gap-2">
             <input
               placeholder="Betrag €"
@@ -143,7 +164,7 @@ export function FinanceWidget() {
             style={{ color: "var(--text-primary)" }}
           />
           <input
-            placeholder="Beschreibung (optional)"
+            placeholder="Beschreibung"
             value={form.description}
             onChange={(e) =>
               setForm((f) => ({ ...f, description: e.target.value }))

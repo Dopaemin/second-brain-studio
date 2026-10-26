@@ -15,13 +15,21 @@ export function PrivateDashboard() {
         height: "100%",
       }}
     >
-      <div style={{ gridRow: "1 / 3" }}>
+      <div style={{ gridColumn: "1", gridRow: "1 / 3" }}>
         <CalendarWidget />
       </div>
-      <GoalsWidget />
-      <PrivateTodos />
-      <FinanceWidget />
-      <HabitTracker />
+      <div style={{ gridColumn: "2", gridRow: "1" }}>
+        <GoalsWidget />
+      </div>
+      <div style={{ gridColumn: "3", gridRow: "1" }}>
+        <FinanceWidget />
+      </div>
+      <div style={{ gridColumn: "2", gridRow: "2" }}>
+        <PrivateTodos />
+      </div>
+      <div style={{ gridColumn: "3", gridRow: "2" }}>
+        <HabitTracker />
+      </div>
     </div>
   );
 }
