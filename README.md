@@ -22,8 +22,14 @@
 
 Second Brain Studio connects your local **Obsidian / Markdown vaults** directly into a unified desktop cockpit featuring **Thematic Pods**, an **Agile Sprint & Backlog Tracker**, and a context-aware **Local AI Copilot**.
 
-> [!NOTE]
-> **No Pre-Built Release Packages:** There are currently no pre-compiled binaries distributed under GitHub Releases. Second Brain Studio is built and run directly from source on your machine. Building locally takes only a few minutes and produces an optimized native macOS application bundle (`Second Brain.app`).
+### 🍺 Install via Homebrew Cask (macOS)
+
+```bash
+brew install --cask dopaemin/tap/second-brain-studio
+```
+
+> [!TIP]
+> Prefer compiling from source? Follow the [Quick Start Guide](#-quick-start-guide) below to run or build the standalone native macOS application bundle in under 2 minutes.
 
 ---
 

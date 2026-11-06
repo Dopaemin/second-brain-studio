@@ -1,0 +1,58 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  release:
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: 'macos-latest' # Apple Silicon (aarch64)
+            args: '--target aarch64-apple-darwin'
+          - platform: 'macos-13'     # Intel (x86_64)
+            args: '--target x86_64-apple-darwin'
+
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.platform == 'macos-13' && 'x86_64-apple-darwin' || 'aarch64-apple-darwin' }}
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Build Tauri App & Publish GitHub Release
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: v__VERSION__
+          releaseName: 'Second Brain Studio v__VERSION__'
+          releaseBody: |
+            ## Second Brain Studio Release
+            Native macOS `.dmg` and `.app` bundles for Apple Silicon and Intel Macs.
+            
+            ### Homebrew Installation
+            ```bash
+            brew install --cask dopaemin/tap/second-brain-studio
+            ```
+          releaseDraft: false
+          prerelease: false
+          args: ${{ matrix.args }}
