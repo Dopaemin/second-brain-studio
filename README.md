@@ -1,186 +1,210 @@
-# Second Brain Studio 🧠⚡️
+<p align="center">
+  <img src="public/app-icon.png" width="96" height="96" alt="Second Brain Studio Icon" style="border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.15);" />
+</p>
 
-> Ein blitzschnelles, editorisch gestaltetes Desktop-Cockpit für Entwickler, Tech-Leads und Wissensarbeiter. Entwickelt mit **Tauri 2.0**, **React 19**, **TypeScript** und **Rust**.
+<h1 align="center">Second Brain Studio</h1>
 
-Second Brain Studio verbindet deine lokalen **Obsidian Markdown-Vaults** mit einem agilen **Sprint- & Backlog-Cockpit**, thematischen **Projekt-Pods** und einem kontextbewussten **lokalen KI-Copiloten**.
+<p align="center">
+  <strong>A lightning-fast, editorial desktop command center for developers, tech leads, and knowledge workers.</strong><br />
+  Built with <strong>Tauri 2.0</strong>, <strong>React 19</strong>, <strong>TypeScript</strong>, and <strong>Rust</strong>.
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Tauri-2.0-blue?style=flat-square&logo=tauri" alt="Tauri 2.0" />
+  <img src="https://img.shields.io/badge/React-19-61dafb?style=flat-square&logo=react" alt="React 19" />
+  <img src="https://img.shields.io/badge/TypeScript-5.x-3178c6?style=flat-square&logo=typescript" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Rust-2021-orange?style=flat-square&logo=rust" alt="Rust" />
+  <img src="https://img.shields.io/badge/TailwindCSS-4.x-38bdf8?style=flat-square&logo=tailwindcss" alt="TailwindCSS" />
+  <img src="https://img.shields.io/badge/macOS-Native-black?style=flat-square&logo=apple" alt="macOS Native" />
+</p>
 
 ---
 
-## ✨ Features im Überblick
+Second Brain Studio connects your local **Obsidian / Markdown vaults** directly into a unified desktop cockpit featuring **Thematic Pods**, an **Agile Sprint & Backlog Tracker**, and a context-aware **Local AI Copilot**.
 
-- 🎯 **Projekt-Pods (Teamaufgabe & LLM Wiki)**:
-  - Bündle Notizen, Aufgaben und Wissenssammlungen thematisch in übersichtlichen Pod-Karten.
-  - Generiere automatisierte Briefings und Aufgaben-Zusammenfassungen direkt aus deinen Notizen.
-- ⚡️ **Sprints & Backlog Cockpit**:
-  - Parst und synchronisiert agile Sprint-Notizen direkt aus deinem Markdown-Ordner (z. B. `Sprint 66.md`, `Sprint 67.md`).
-  - Interaktives Weiterschalten des Task-Status (`⏳ Offen` → `🔄 In Arbeit` → `✅ Fertig`).
-  - Automatische Erkennung des aktiven Sprints und 1-Klick-Workflow für Sprint-Abschluss inklusive **Carry-Over** offener Items.
-  - Direkte Verlinkung zu Jira-Tickets (`[GRL-15143](...)`).
-- 🤖 **Integrierter KI-Copilot (`⌘J`)**:
-  - Konversations-Assistent mit Werkzeugen (`search_notes`, `read_note`, `list_folder`).
-  - Funktioniert mit **lokalen LLMs** (Ollama, LM Studio) oder Cloud-Modellen (OpenAI-kompatible APIs).
-  - Volle Privatsphäre: Deine Notizen bleiben auf deiner Festplatte.
-- 🔍 **Globale Command Palette (`⌘K`)**:
-  - Blitzschnelle Fuzzy-Suche über alle Dokumente deines Work- und Private-Vaults.
+> [!NOTE]
+> **No Pre-Built Release Packages:** There are currently no pre-compiled binaries distributed under GitHub Releases. Second Brain Studio is built and run directly from source on your machine. Building locally takes only a few minutes and produces an optimized native macOS application bundle (`Second Brain.app`).
+
+---
+
+## ✨ Key Features
+
+- 🎯 **Project Pods (Team Tasks & LLM Wiki)**:
+  - Group notes, task sets, and documentation thematically into dedicated project pods.
+  - Automatically synthesize briefings, status reports, and task overviews straight from your notes.
+- ⚡️ **Sprint & Backlog Cockpit**:
+  - Live bi-directional sync with sprint markdown notes (e.g., `Sprint 66.md`, `Sprint 67.md`).
+  - Interactive status cycling directly from the UI (`⏳ Todo` → `🔄 In Progress` → `✅ Done`).
+  - Automatic detection of active sprints and a 1-click **Sprint Close Workflow** with carry-over of unfinished tasks.
+  - Automatic Jira ticket parsing and clickable deep links (`[GRL-15143](...)`).
+- 🤖 **Context-Aware AI Copilot (`⌘J`)**:
+  - Conversational assistant equipped with native tools (`search_notes`, `read_note`, `list_folder`).
+  - Works with **Local LLMs** (Ollama, LM Studio) or cloud endpoints (any OpenAI-compatible API).
+  - 100% private: your vault files never leave your machine when using local models.
+- 🔍 **Global Command Palette (`⌘K`)**:
+  - Instant fuzzy search across every document, session, and resource in your vaults.
 - 📖 **Markdown Viewer**:
-  - Native Darstellung von GitHub-Flavored Markdown mit Live-Auflösung von `[[Wiki-Links]]`, Task-Listen und Code-Highlighting.
+  - Rich GitHub-Flavored Markdown rendering with live resolution of `[[Wiki-Links]]`, interactive checklists, and code highlighting.
 - 🎨 **Editorial Design & macOS Native**:
-  - Klares, ablenkungsfreies Design mit nativer Schweizer Typografie (Apple SF Pro, New York, SF Mono).
-  - Nahtloser Dark Mode & Light Mode mit subtiler Glasoptik und rahmenlosem macOS-Fenster.
+  - Swiss typography using Apple native system fonts (SF Pro, New York, SF Mono).
+  - Seamless dark and light modes, subtle glassmorphism, and a frameless macOS window.
 
 ---
 
-## 🛠️ Voraussetzungen
+## 🛠️ Prerequisites
 
-Bevor du das Repository klonst, stelle sicher, dass folgende Werkzeuge auf deinem System installiert sind:
+Ensure you have the following tools installed on your development machine before cloning:
 
-1. **Node.js** (Version 18 oder neuer):
+1. **Node.js** (v18+ recommended):
    ```bash
    node --version
    npm --version
    ```
-2. **Rust & Cargo** (für die native Tauri-Desktop-Engine):
+2. **Rust & Cargo** (required for the native Tauri desktop core):
    ```bash
    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
    ```
-   Überprüfe die Installation:
+   Verify installation:
    ```bash
    rustc --version
    cargo --version
    ```
-3. **Plattform-Abhängigkeiten**:
-   - **macOS**: Xcode Command Line Tools installieren:
+3. **Platform Dependencies**:
+   - **macOS**: Install Xcode Command Line Tools:
      ```bash
      xcode-select --install
      ```
-   - **Linux / Windows**: Siehe die offiziellen [Tauri Prerequisites](https://v2.tauri.app/start/prerequisites/).
+   - **Linux / Windows**: Refer to the official [Tauri Prerequisites Guide](https://v2.tauri.app/start/prerequisites/).
 
 ---
 
-## 🚀 Schnellstart (In 4 Schritten)
+## 🚀 Quick Start Guide
 
-### 1. Repository klonen
+### 1. Clone the Repository
 ```bash
 git clone https://github.com/Dopaemin/second-brain-studio.git
 cd second-brain-studio
 ```
 
-### 2. Abhängigkeiten installieren
+### 2. Install Dependencies
 ```bash
 npm install
 ```
 
-### 3. Vault-Pfade konfigurieren (Optional vor dem Start)
-Kopiere die Beispiel-Umgebungsdatei:
+### 3. Configure Vault Paths (Optional)
+Copy the example environment template:
 ```bash
 cp .env.example .env
 ```
-Öffne `.env` und passe die Pfade zu deinen Notizen an:
+Open `.env` and set the paths to your local Markdown directories:
 ```dotenv
-# Pfad zu deinem primären Arbeits-Vault (z. B. Obsidian)
-VITE_WORK_VAULT="/Users/dein-name/Documents/second-brain"
+# Path to your work/primary knowledge vault (e.g., Obsidian vault)
+VITE_WORK_VAULT="/Users/username/Documents/second-brain"
 
-# Pfad zu deinem privaten Vault (optional)
-VITE_PRIVATE_VAULT="/Users/dein-name/Documents/personal-brain"
+# Path to your personal/private vault (optional)
+VITE_PRIVATE_VAULT="/Users/username/Documents/personal-brain"
 
-# Lokaler KI-Endpunkt (z. B. Ollama)
+# Local AI endpoint (e.g., Ollama or LM Studio)
 VITE_AI_BASE_URL="http://127.0.0.1:11434/v1"
 ```
-*(Hinweis: Du kannst die Pfade auch jederzeit direkt in der App über die Einstellungen anpassen!)*
+*(Tip: You can also configure or change vault paths anytime inside the app settings!)*
 
-### 4. Anwendung im Entwicklungsmodus starten
+### 4. Launch in Development Mode
 ```bash
 npm run dev:tauri
 ```
-*(Alternativ: `npx tauri dev`)*
+*(Or alternatively: `npx tauri dev`)*
 
-Tauri startet den Vite-Entwicklungsserver und öffnet das native App-Fenster.
-
----
-
-## ⚙️ Vaults in der App konfigurieren
-
-Falls du keine `.env`-Datei anlegen möchtest oder deine Notizen auf einem anderen Pfad liegen:
-
-1. Drücke in der App **`⌘,`** (oder klicke oben rechts auf das Einstellungen-Icon).
-2. Wechsle auf den Reiter **„Knowledge Vaults“**.
-3. Trage deine lokalen Verzeichnispfade ein und klicke auf **„Pfade speichern“**.
-4. Die App liest deine Ordnerstruktur und Markdown-Notizen sofort live ein!
+Tauri will compile the Rust core, start the Vite dev server, and open the desktop application window.
 
 ---
 
-## 🤖 Lokalen KI-Copiloten einrichten (Ollama / LM Studio)
+## ⚙️ Configuring Vaults Inside the App
 
-Der Copilot kann mit jedem OpenAI-kompatiblen Endpunkt verbunden werden:
+If you prefer not to create a `.env` file, you can set your paths directly in the UI:
 
-### Mit Ollama:
-1. Installiere [Ollama](https://ollama.com/) und lade ein Modell herunter:
+1. Open **Settings** by pressing **`⌘,`** (or clicking the sliders icon in the top header).
+2. Switch to the **„Knowledge Vaults“** tab.
+3. Enter the absolute path to your Obsidian or Markdown folders and click **„Pfade speichern“** (Save Paths).
+4. The studio will instantly index and display your folder tree and notes live!
+
+---
+
+## 🤖 Connecting a Local LLM (Ollama / LM Studio)
+
+Second Brain Studio connects out-of-the-box with any OpenAI-compatible API:
+
+### Using Ollama:
+1. Install [Ollama](https://ollama.com/) and download a model of your choice:
    ```bash
    ollama run llama3.1:8b
    ```
-2. Öffne die Einstellungen in Second Brain Studio (`⌘,`) → Reiter **„KI Copilot“**.
-3. Setze die Endpunkt-URL auf: `http://127.0.0.1:11434/v1`
-4. Modellname: `llama3.1:8b`
-5. Fertig! Drücke **`⌘J`**, um Notizen zusammenfassen oder durchsuchen zu lassen.
+2. In Second Brain Studio, press **`⌘,`** → navigate to the **„KI Copilot“** tab.
+3. Set the Endpoint URL to: `http://127.0.0.1:11434/v1`
+4. Set Model Name to: `llama3.1:8b`
+5. Press **`⌘J`** anywhere in the app to ask questions about your notes, brainstorm solutions, or search across documents.
 
 ---
 
-## 📦 Produktions-Build erstellen
+## 📦 Building from Source (Local macOS `.app`)
 
-Um eine fertige `.app` für macOS (oder die entsprechende Binärdatei für dein Betriebssystem) zu bauen:
+Since there are no pre-packaged release binaries, you can build your own optimized production bundle with one command:
 
 ```bash
 npm run build:tauri
 ```
 
-Das fertige Bundle befindet sich anschließend unter:
-- **macOS:** `src-tauri/target/release/bundle/macos/Second Brain.app`
-- Zum Installieren einfach nach `/Applications/` kopieren:
-  ```bash
-  cp -R "src-tauri/target/release/bundle/macos/Second Brain.app" /Applications/
-  ```
+Once compilation completes, the standalone app will be located at:
+```text
+src-tauri/target/release/bundle/macos/Second Brain.app
+```
+
+To install it into your system Applications folder:
+```bash
+cp -R "src-tauri/target/release/bundle/macos/Second Brain.app" /Applications/
+```
 
 ---
 
-## ⌨️ Tastatur-Kürzel (Cheatsheet)
+## ⌨️ Keyboard Shortcuts
 
-| Tastenkürzel | Funktion |
+| Shortcut | Action |
 | :--- | :--- |
-| **`⌘K`** / `Ctrl+K` | Dokumentensuche & Command Palette öffnen |
-| **`⌘J`** / `Ctrl+J` | KI Wiki-Copilot Drawer ein-/ausblenden |
-| **`⌘,`** / `Ctrl+,` | Einstellungen öffnen (Vaults, Typografie, KI) |
-| **`⌘1`** | Zum Arbeits-Wissensraum wechseln |
-| **`⌘2`** | Zum privaten Wissensraum wechseln |
-| **`ESC`** | Modals, Suchleiste oder Dokumentendetailansicht schließen |
+| **`⌘K`** / `Ctrl+K` | Open Command Palette / Global Document Search |
+| **`⌘J`** / `Ctrl+J` | Toggle AI Wiki-Copilot Drawer |
+| **`⌘,`** / `Ctrl+,` | Open Settings (Vaults, Typography, AI) |
+| **`⌘1`** | Switch to Work Knowledge Space |
+| **`⌘2`** | Switch to Private Knowledge Space |
+| **`ESC`** | Close Modals, Command Palette, or Document Viewer |
 
 ---
 
-## 📂 Projektstruktur
+## 📂 Project Architecture
 
 ```text
-menubar-dashboard/
-├── src-tauri/                 # Rust Backend (Tauri 2.0)
+second-brain-studio/
+├── src-tauri/                 # Rust Core (Tauri 2.0)
 │   ├── src/
-│   │   ├── commands/         # Native Dateisystem-, Todo-, KI-Befehle
-│   │   ├── lib.rs            # Fensterkonfiguration & Menüleiste
+│   │   ├── commands/         # Native filesystem, todo parser, AI bridge
+│   │   ├── lib.rs            # Window configuration & macOS titlebar styling
 │   │   └── main.rs
-│   └── tauri.conf.json       # App-Rechte, Fenstermaße, Bundling
-├── src/                      # React 19 Frontend
+│   └── tauri.conf.json       # Bundle settings, permissions, window specs
+├── src/                      # Frontend Application (React 19 + TypeScript)
 │   ├── components/
-│   │   ├── ai/               # AI Copilot Chat-Drawer
-│   │   ├── pods/             # Pod-Karten, Modals & Detailansichten
-│   │   ├── settings/         # Einstellungs-Modal (Typografie, Vaults, KI)
-│   │   ├── work/             # Sprints, Backlogs, Tree-View, Cockpit
-│   │   └── CommandPalette.tsx # Globale Schnellsuchleiste
-│   ├── hooks/                # React Hooks (useSprintData, usePods, useVaultFiles)
-│   ├── lib/                  # Parser & Hilfsfunktionen (sprints.ts, pods.ts)
-│   └── App.tsx               # Haupt-App & Tastatur-Handler
-├── .env.example              # Vorlage für lokale Pfade
+│   │   ├── ai/               # AI Copilot chat drawer & tool renderers
+│   │   ├── pods/             # Project pod cards, detail view & modals
+│   │   ├── settings/         # Settings modal (Vaults, Typography, AI)
+│   │   ├── work/             # Sprint dashboard, cockpit, file tree
+│   │   └── CommandPalette.tsx # Global fuzzy search palette
+│   ├── hooks/                # Custom React hooks (useSprintData, usePods, useVaultFiles)
+│   ├── lib/                  # Markdown & frontmatter parsers (sprints.ts, pods.ts)
+│   └── App.tsx               # Main layout and global shortcut handlers
+├── .env.example              # Environment variables template
 └── README.md
 ```
 
 ---
 
-## 📄 Lizenz
+## 📄 License
 
-Entwickelt für den persönlichen und produktiven Einsatz. Feedback und Pull Requests sind willkommen!
+Built for personal and professional productivity. Issues and pull requests are warmly welcomed!
