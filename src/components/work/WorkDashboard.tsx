@@ -1,38 +1,59 @@
+import { useState } from "react";
 import { QuickAccess } from "./QuickAccess";
 import { QuickNote } from "./QuickNote";
-import { RecentFiles } from "./RecentFiles";
-import { SprintNotes } from "./SprintNotes";
 import { TodoList } from "./TodoList";
+import { SprintNotes } from "./SprintNotes";
+import { WorkCockpitOverview } from "./WorkCockpitOverview";
+import { MarkdownViewer } from "../MarkdownViewer";
 
-export function WorkDashboard() {
+interface WorkDashboardProps {
+  selectedFile?: string | null;
+  onSelectFile?: (path: string | null) => void;
+}
+
+export function WorkDashboard({ selectedFile, onSelectFile }: WorkDashboardProps) {
+  const [internalFile, setInternalFile] = useState<string | null>(null);
+
+  const activePath = selectedFile !== undefined ? selectedFile : internalFile;
+  const setActivePath = onSelectFile || setInternalFile;
+
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "260px 1fr 320px",
-          gridTemplateRows: "1fr 1fr",
-          gap: "1px",
-          flex: 1,
-          background: "var(--border)",
-          overflow: "hidden",
-        }}
-      >
-        <div style={{ gridRow: "1 / 3", background: "var(--bg)", overflow: "hidden" }}>
-          <QuickAccess />
+    <div className="flex flex-col h-full overflow-hidden select-none">
+      {/* Main Grid Section */}
+      <div className="flex-1 grid grid-cols-12 gap-3.5 p-3.5 min-h-0 overflow-hidden">
+        {/* Left Column: PARA Navigator (3 cols) */}
+        <div className="col-span-3 h-full overflow-hidden">
+          <QuickAccess
+            selectedFilePath={activePath}
+            onSelectFile={setActivePath}
+          />
         </div>
-        <div style={{ background: "var(--bg)", overflow: "hidden" }}>
-          <RecentFiles />
+
+        {/* Center Column: Either Markdown Viewer or Cockpit Overview (6 cols) */}
+        <div className="col-span-6 h-full overflow-hidden">
+          {activePath ? (
+            <MarkdownViewer
+              filePath={activePath}
+              onClose={() => setActivePath(null)}
+            />
+          ) : (
+            <WorkCockpitOverview onSelectFile={setActivePath} />
+          )}
         </div>
-        <div style={{ gridRow: "1 / 3", background: "var(--bg)", overflow: "hidden" }}>
-          <TodoList />
-        </div>
-        <div style={{ background: "var(--bg)", overflow: "hidden" }}>
-          <SprintNotes />
+
+        {/* Right Column: Interactive Todo List & Sprint Sessions (3 cols) */}
+        <div className="col-span-3 h-full flex flex-col gap-3.5 overflow-hidden">
+          <div className="flex-1 min-h-0 overflow-hidden">
+            <TodoList onSelectFile={setActivePath} />
+          </div>
+          <div className="h-[38%] min-h-0 overflow-hidden">
+            <SprintNotes onSelectFile={setActivePath} />
+          </div>
         </div>
       </div>
-      {/* Quick note bar at bottom */}
-      <div style={{ borderTop: "1px solid var(--border)", background: "var(--bg-surface)" }}>
+
+      {/* Docked Quick Note Bar at Bottom */}
+      <div className="shrink-0 bg-white border-t border-hairline">
         <QuickNote />
       </div>
     </div>

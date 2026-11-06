@@ -14,6 +14,10 @@ pub fn parse_todos(vault_path: String) -> Result<Vec<TodoItem>, String> {
 
     let walker = walkdir::WalkDir::new(&vault_path)
         .into_iter()
+        .filter_entry(|e| {
+            !super::fs::is_ignored_dir(e, &vault_path)
+                && !(e.file_type().is_dir() && e.file_name().to_string_lossy() == "06 Archiv")
+        })
         .filter_map(|e| e.ok())
         .filter(|e| {
             e.path().extension().map(|x| x == "md").unwrap_or(false)

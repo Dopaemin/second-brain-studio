@@ -13,14 +13,16 @@
       {
         "label": "main",
         "title": "Second Brain",
-        "width": 1200,
-        "height": 760,
-        "minWidth": 900,
-        "minHeight": 600,
+        "width": 1360,
+        "height": 840,
+        "minWidth": 980,
+        "minHeight": 640,
         "decorations": true,
-        "transparent": false,
+        "titleBarStyle": "Overlay",
+        "hiddenTitle": true,
+        "transparent": true,
         "resizable": true,
-        "visible": false,
+        "visible": true,
         "alwaysOnTop": false,
         "skipTaskbar": false
       }
@@ -33,7 +35,7 @@
   },
   "bundle": {
     "active": true,
-    "targets": "all",
+    "targets": ["app"],
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",

@@ -2,14 +2,15 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
+import { vaultApi } from "./vite-plugin-vault";
 const host = process.env.TAURI_DEV_HOST;
 
 // https://vite.dev/config/
 export default defineConfig(() => ({
-  plugins: [react(), tailwindcss()],
+  plugins: [react(), tailwindcss(), vaultApi()],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      "@": path.resolve(import.meta.dirname, "./src"),
     },
   },
 
@@ -22,6 +23,13 @@ export default defineConfig(() => ({
     port: 1420,
     strictPort: true,
     host: host || false,
+    proxy: {
+      "/hai-api": {
+        target: "http://localhost:6655",
+        changeOrigin: true,
+        rewrite: (p) => p.replace(/^\/hai-api/, ""),
+      },
+    },
     hmr: host
       ? {
           protocol: "ws",
