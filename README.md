@@ -16,20 +16,39 @@
   <img src="https://img.shields.io/badge/Rust-2021-orange?style=flat-square&logo=rust" alt="Rust" />
   <img src="https://img.shields.io/badge/TailwindCSS-4.x-38bdf8?style=flat-square&logo=tailwindcss" alt="TailwindCSS" />
   <img src="https://img.shields.io/badge/macOS-Native-black?style=flat-square&logo=apple" alt="macOS Native" />
+  <img src="https://img.shields.io/badge/Homebrew-Cask-f39c12?style=flat-square&logo=homebrew" alt="Homebrew Cask" />
 </p>
 
 ---
 
 Second Brain Studio connects your local **Obsidian / Markdown vaults** directly into a unified desktop cockpit featuring **Thematic Pods**, an **Agile Sprint & Backlog Tracker**, and a context-aware **Local AI Copilot**.
 
-### 🍺 Install via Homebrew Cask (macOS)
+## 🍺 Installation via Homebrew (macOS)
+
+The easiest and recommended way to install and manage Second Brain Studio is via **Homebrew Cask**:
 
 ```bash
+# One-line direct install
 brew install --cask dopaemin/tap/second-brain-studio
 ```
 
+Alternatively, add the tap repository explicitly first:
+```bash
+brew tap dopaemin/tap
+brew install --cask second-brain-studio
+```
+
+#### Updating
+To update Second Brain Studio whenever a new release is published:
+```bash
+brew upgrade --cask second-brain-studio
+```
+
 > [!TIP]
-> Prefer compiling from source? Follow the [Quick Start Guide](#-quick-start-guide) below to run or build the standalone native macOS application bundle in under 2 minutes.
+> **macOS Gatekeeper First Launch:** As an independent open-source project without Apple Developer notarization ($99/year), macOS may display a Gatekeeper dialog on first start. Simply right-click `Second Brain.app` in `/Applications` and select **Open**, or run this terminal command:
+> ```bash
+> xattr -cr "/Applications/Second Brain.app"
+> ```
 
 ---
 
@@ -154,7 +173,7 @@ Second Brain Studio connects out-of-the-box with any OpenAI-compatible API:
 
 ## 📦 Building from Source (Local macOS `.app`)
 
-Since there are no pre-packaged release binaries, you can build your own optimized production bundle with one command:
+If you prefer to compile Second Brain Studio yourself rather than installing via Homebrew, you can build your own optimized production bundle with one command:
 
 ```bash
 npm run build:tauri
