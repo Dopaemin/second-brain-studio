@@ -16,8 +16,9 @@ import {
   Compass,
   ExternalLink,
   Layers,
+  Sliders,
 } from "lucide-react";
-import { useVaultFiles, useRecentFiles } from "@/hooks/useVaultFiles";
+import { useVaultFiles, useRecentFiles, WORK_VAULT } from "@/hooks/useVaultFiles";
 import { useCopilotActions, isEditedByCopilot } from "@/lib/copilotHistory";
 import { usePods } from "@/hooks/usePods";
 import { Pod, getPodFiles } from "@/lib/pods";
@@ -274,6 +275,68 @@ export function WorkCockpitOverview({ onSelectFile }: WorkCockpitOverviewProps) 
               </button>
             </div>
           </div>
+
+          {/* First-time Welcome & Setup Guide if Vault has 0 notes */}
+          {files.length === 0 && (
+            <div className="p-6 rounded-lg border border-hairline bg-gradient-to-br from-[var(--bg-surface)] to-[var(--bg-subtle)] space-y-4 shadow-2xs animate-fadeIn">
+              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-emerald-500" />
+                    <h3 className="font-editorial text-lg font-semibold text-[var(--text-primary)]">
+                      Willkommen im Second Brain Studio
+                    </h3>
+                  </div>
+                  <p className="text-xs text-[var(--text-muted)] max-w-xl leading-relaxed">
+                    Es wurden noch keine Markdown-Notizen unter{" "}
+                    <code className="px-1.5 py-0.5 rounded bg-black/5 dark:bg-white/5 font-mono text-[11px] text-[var(--text-primary)]">
+                      {WORK_VAULT}
+                    </code>{" "}
+                    gefunden. Verbinde deinen bestehenden Obsidian-Vault oder erstelle Notizen in den Einstellungen.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    window.dispatchEvent(
+                      new KeyboardEvent("keydown", { key: ",", metaKey: true, bubbles: true })
+                    );
+                  }}
+                  className="px-3.5 py-2 rounded-[4px] bg-[var(--text-primary)] text-[var(--bg-canvas)] text-xs font-semibold cursor-pointer shadow-xs hover:opacity-90 transition-opacity shrink-0 flex items-center gap-1.5"
+                >
+                  <Sliders className="w-3.5 h-3.5" />
+                  <span>Vault-Pfade anpassen (⌘,)</span>
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2">
+                <div className="p-3 rounded border border-hairline bg-[var(--bg-surface)] space-y-1">
+                  <span className="font-mono text-[10px] text-[var(--text-muted)] uppercase block font-semibold">
+                    1. Notizen verbinden
+                  </span>
+                  <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
+                    Trage deinen Markdown- oder Obsidian-Ordnerpfad ein. Alle Unterordner und Notizen werden live synchronisiert.
+                  </p>
+                </div>
+                <div className="p-3 rounded border border-hairline bg-[var(--bg-surface)] space-y-1">
+                  <span className="font-mono text-[10px] text-[var(--text-muted)] uppercase block font-semibold">
+                    2. Pods & Sprints nutzen
+                  </span>
+                  <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
+                    Bündle Aufgaben in Projekten, verwalte Sprints und greife über die Suche (⌘K) sekundenschnell darauf zu.
+                  </p>
+                </div>
+                <div className="p-3 rounded border border-hairline bg-[var(--bg-surface)] space-y-1">
+                  <span className="font-mono text-[10px] text-[var(--text-muted)] uppercase block font-semibold">
+                    3. KI Copilot (⌘J)
+                  </span>
+                  <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
+                    Öffne den Assistenten für kontextuelle Recherchen über dein gesamtes Vault mit lokalem LLM oder API.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Minimalist Metrics Grid - 4 Columns */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5">

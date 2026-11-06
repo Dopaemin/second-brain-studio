@@ -15,14 +15,43 @@ export interface TodoItem {
   line_index: number;
 }
 
-export const WORK_VAULT = "/Users/I539120/Documents/second-brain";
-export const PRIVATE_VAULT = "/Users/I539120/Documents/personal-brain";
+export const DEFAULT_WORK_VAULT =
+  (import.meta.env.VITE_WORK_VAULT as string) || "/Users/I539120/Documents/second-brain";
+export const DEFAULT_PRIVATE_VAULT =
+  (import.meta.env.VITE_PRIVATE_VAULT as string) || "/Users/I539120/Documents/personal-brain";
+
+export function getWorkVault(): string {
+  if (typeof window === "undefined") return DEFAULT_WORK_VAULT;
+  return localStorage.getItem("second_brain_work_vault") || DEFAULT_WORK_VAULT;
+}
+
+export function getPrivateVault(): string {
+  if (typeof window === "undefined") return DEFAULT_PRIVATE_VAULT;
+  return localStorage.getItem("second_brain_private_vault") || DEFAULT_PRIVATE_VAULT;
+}
+
+export function setVaultPaths(work?: string, personal?: string) {
+  if (work) localStorage.setItem("second_brain_work_vault", work.trim());
+  if (personal) localStorage.setItem("second_brain_private_vault", personal.trim());
+  listCache.clear();
+  emitVaultChanged();
+}
+
+export function resetVaultPaths() {
+  localStorage.removeItem("second_brain_work_vault");
+  localStorage.removeItem("second_brain_private_vault");
+  listCache.clear();
+  emitVaultChanged();
+}
+
+export const WORK_VAULT = getWorkVault();
+export const PRIVATE_VAULT = getPrivateVault();
 
 export const vaultRoot = (vault: "work" | "private") =>
-  vault === "work" ? WORK_VAULT : PRIVATE_VAULT;
+  vault === "work" ? getWorkVault() : getPrivateVault();
 
 export const vaultOfPath = (p: string): "work" | "private" =>
-  p.startsWith(PRIVATE_VAULT) ? "private" : "work";
+  p.startsWith(getPrivateVault()) ? "private" : "work";
 
 // Share one in-flight listing between all components (vaults can be large).
 const listCache = new Map<string, Promise<VaultFile[]>>();

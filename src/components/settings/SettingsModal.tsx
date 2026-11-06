@@ -25,7 +25,12 @@ import {
   DEFAULT_CONFIG,
   AgentConfig,
 } from "@/lib/aiAgent";
-import { WORK_VAULT, PRIVATE_VAULT } from "@/hooks/useVaultFiles";
+import {
+  getWorkVault,
+  getPrivateVault,
+  setVaultPaths,
+  resetVaultPaths,
+} from "@/hooks/useVaultFiles";
 
 function AppleLogo({ className }: { className?: string }) {
   return (
@@ -57,6 +62,11 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   // AI config state inside settings
   const [aiConfig, setAiConfig] = useState<AgentConfig>(getStoredConfig);
   const [savedAiSuccess, setSavedAiSuccess] = useState(false);
+
+  // Vault paths state
+  const [workVaultInput, setWorkVaultInput] = useState(getWorkVault);
+  const [privateVaultInput, setPrivateVaultInput] = useState(getPrivateVault);
+  const [savedVaultSuccess, setSavedVaultSuccess] = useState(false);
 
   // Close on Escape
   useEffect(() => {
@@ -758,45 +768,94 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                   Verbundene Knowledge Vaults
                 </h3>
                 <p className="text-[var(--text-muted)] mt-0.5">
-                  Deine lokalen Obsidian Markdown-Verzeichnisse auf dem System.
+                  Verbinde deine lokalen Obsidian Markdown-Verzeichnisse auf deinem Rechner.
                 </p>
               </div>
 
-              <div className="p-3.5 rounded-lg border border-hairline bg-[#fafaf8] dark:bg-[var(--bg-subtle)] space-y-3 font-mono text-[11.5px]">
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  setVaultPaths(workVaultInput, privateVaultInput);
+                  setSavedVaultSuccess(true);
+                  setTimeout(() => setSavedVaultSuccess(false), 2500);
+                }}
+                className="space-y-3"
+              >
                 <div>
-                  <span className="text-[var(--text-muted)] block text-[10px] uppercase">
-                    Arbeit / Second Brain:
-                  </span>
-                  <span className="text-[var(--text-primary)] break-all">{WORK_VAULT}</span>
+                  <label className="block text-[11px] font-mono text-[var(--text-muted)] mb-1 uppercase font-semibold">
+                    Arbeit / Second Brain Pfad:
+                  </label>
+                  <input
+                    type="text"
+                    value={workVaultInput}
+                    onChange={(e) => setWorkVaultInput(e.target.value)}
+                    placeholder="/Users/username/Documents/second-brain"
+                    className="w-full px-3 py-2 bg-[var(--bg-subtle)] border border-hairline rounded-[4px] font-mono text-xs text-[var(--text-primary)] outline-none focus:border-[var(--border-strong)]"
+                  />
                 </div>
+
                 <div>
-                  <span className="text-[var(--text-muted)] block text-[10px] uppercase">
-                    Privat / Personal Brain:
-                  </span>
-                  <span className="text-[var(--text-primary)] break-all">{PRIVATE_VAULT}</span>
+                  <label className="block text-[11px] font-mono text-[var(--text-muted)] mb-1 uppercase font-semibold">
+                    Privat / Personal Brain Pfad:
+                  </label>
+                  <input
+                    type="text"
+                    value={privateVaultInput}
+                    onChange={(e) => setPrivateVaultInput(e.target.value)}
+                    placeholder="/Users/username/Documents/personal-brain"
+                    className="w-full px-3 py-2 bg-[var(--bg-subtle)] border border-hairline rounded-[4px] font-mono text-xs text-[var(--text-primary)] outline-none focus:border-[var(--border-strong)]"
+                  />
                 </div>
-              </div>
+
+                <div className="flex items-center justify-between pt-2 border-t border-hairline">
+                  {savedVaultSuccess ? (
+                    <span className="text-emerald-600 font-medium flex items-center gap-1.5 text-xs">
+                      <CheckCircle2 className="w-3.5 h-3.5" />
+                      <span>Vault-Pfade erfolgreich gespeichert!</span>
+                    </span>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        resetVaultPaths();
+                        setWorkVaultInput(getWorkVault());
+                        setPrivateVaultInput(getPrivateVault());
+                      }}
+                      className="text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer"
+                    >
+                      Auf Standard zurücksetzen
+                    </button>
+                  )}
+
+                  <button
+                    type="submit"
+                    className="editorial-btn editorial-btn-primary px-4 py-1.5 text-xs font-semibold cursor-pointer"
+                  >
+                    Pfade speichern
+                  </button>
+                </div>
+              </form>
 
               <div className="pt-2">
                 <h4 className="font-semibold text-xs text-[var(--text-primary)] mb-2">
                   Tastatur-Kürzel Übersicht:
                 </h4>
                 <div className="grid grid-cols-2 gap-2 font-mono text-[11px]">
-                  <div className="p-2 rounded border border-hairline bg-white flex justify-between">
+                  <div className="p-2 rounded border border-hairline bg-[var(--bg-subtle)] flex justify-between">
                     <span>Dokumentensuche:</span>
-                    <kbd className="px-1.5 py-0.5 bg-black/[0.04] rounded border border-hairline">⌘K</kbd>
+                    <kbd className="px-1.5 py-0.5 bg-black/[0.04] dark:bg-white/[0.06] rounded border border-hairline">⌘K</kbd>
                   </div>
-                  <div className="p-2 rounded border border-hairline bg-white flex justify-between">
+                  <div className="p-2 rounded border border-hairline bg-[var(--bg-subtle)] flex justify-between">
                     <span>Wiki Copilot:</span>
-                    <kbd className="px-1.5 py-0.5 bg-black/[0.04] rounded border border-hairline">⌘J</kbd>
+                    <kbd className="px-1.5 py-0.5 bg-black/[0.04] dark:bg-white/[0.06] rounded border border-hairline">⌘J</kbd>
                   </div>
-                  <div className="p-2 rounded border border-hairline bg-white flex justify-between">
+                  <div className="p-2 rounded border border-hairline bg-[var(--bg-subtle)] flex justify-between">
                     <span>Einstellungen:</span>
-                    <kbd className="px-1.5 py-0.5 bg-black/[0.04] rounded border border-hairline">⌘,</kbd>
+                    <kbd className="px-1.5 py-0.5 bg-black/[0.04] dark:bg-white/[0.06] rounded border border-hairline">⌘,</kbd>
                   </div>
-                  <div className="p-2 rounded border border-hairline bg-white flex justify-between">
+                  <div className="p-2 rounded border border-hairline bg-[var(--bg-subtle)] flex justify-between">
                     <span>Zurück / Schließen:</span>
-                    <kbd className="px-1.5 py-0.5 bg-black/[0.04] rounded border border-hairline">ESC</kbd>
+                    <kbd className="px-1.5 py-0.5 bg-black/[0.04] dark:bg-white/[0.06] rounded border border-hairline">ESC</kbd>
                   </div>
                 </div>
               </div>
